@@ -144,8 +144,8 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 
 
 			float reducer = 0;
+			if (bSize < 1.3f) reducer++;
 			if (bSize < 0.84f) reducer++;
-			if (bSize < 0.72f) reducer++;
 
 			if (preBreastSize != bSize) {
 				lBreast = new BreastModelBox(64, 64, 16, 17, -4F, 0.0F, 0F, 4, 5, (int) (4 - breastOffsetZ - reducer), 0.0F, false);
@@ -269,10 +269,14 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 			if (!bounceEnabled) {
 				totalRotation = breastSize;
 			}
-			if (totalRotation > breastSize + 0.2F) {
-				totalRotation = breastSize + 0.2F;
+			
+			if (breastSize > 2f) {
+				totalRotation = Math.min(totalRotation, breastSize - 1f);
+				totalRotation = Math.min(totalRotation, 1.1f); //hard limit for MAX
+			} else {
+				totalRotation = Math.min(totalRotation, breastSize + 0.2f);
+				totalRotation = Math.min(totalRotation, 1f); //hard limit for MAX
 			}
-			totalRotation = Math.min(totalRotation, 1); //hard limit for MAX
 
 			if (isChestplateOccupied) {
 				matrixStack.translate(0, 0, 0.01f);
